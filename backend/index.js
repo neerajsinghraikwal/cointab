@@ -26,7 +26,7 @@ app.get("/fetch",async(req,res)=>{
     try{
         const data = await axios.get("https://randomuser.me/api/?results=50")
         const users = data.data.results
-        const userdata = users.map(({ gender, name, email,location:{country},registered:{age} }) => ({ gender, name, email,country,age}));
+        const userdata = users.map(({ gender, name, email,location:{country},registered:{age},picture:{large} }) => ({ gender, name, email,country,age,large}));
         res.send(userdata)
     }catch(e){
         res.send({message:"error occur"})
