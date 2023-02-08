@@ -37,8 +37,10 @@ userRouter.get("/",async(req,res)=>{
         filter["gender"] = gender;
     }
     try{
-        const users = await UserModel.find(filter).limit(limit).skip((page - 1) * limit)
-        res.status(200).send(users)
+        const users = await UserModel.find(filter).count()
+        const total = users
+        const data = await UserModel.find(filter).limit(limit).skip((page - 1) * limit)
+        res.status(200).send({total,data})
     }catch(e){
         res.status(400).send({message:"failure"})
     }
