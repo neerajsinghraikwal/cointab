@@ -24,8 +24,20 @@ userRouter.post("/",async(req,res)=>{
 // getting the users data from Database.
 
 userRouter.get("/",async(req,res)=>{
+    const {page,age,country,gender} = req.query
+    const limit = 10;
+    let filter = {};
+    if (age) {
+        filter["age"] = { $gte: age };
+    }
+    if (country) {
+        filter["country"] = country;
+    }
+    if (gender) {
+        filter["gender"] = gender;
+    }
     try{
-        const users = await UserModel.find()
+        const users = await UserModel.find(filter).limit(limit).skip((page - 1) * limit)
         res.status(200).send(users)
     }catch(e){
         res.status(400).send({message:"failure"})
