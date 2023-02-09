@@ -26,6 +26,7 @@ const Home = () => {
           position: 'top'
         })
       }catch(e){
+        setFetchLoading(false);
         toast({
           title: 'Try Again...',
           description: "Sorry...",
@@ -55,6 +56,7 @@ const Home = () => {
           position: 'top'
         })
       }catch(e){
+        setDeleteLoading(false);
          toast({
           title: 'Try Again...',
           description: "Sorry...",
