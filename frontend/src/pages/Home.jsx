@@ -11,6 +11,7 @@ const Home = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
+  // fetch and add users data to database
   const handleFetch = async () => {
     setFetchLoading(true);
     try {
@@ -38,10 +39,12 @@ const Home = () => {
     }
   };
 
+  // Redirect to the Users Page
   const handleUsers = () => {
     navigate("/users");
   };
 
+  // Delete users data from Database
   const handleDelete = async () => {
     setDeleteLoading(true);
     try {
@@ -68,6 +71,7 @@ const Home = () => {
     }
   };
 
+  
   return (
     <>
       <Box
