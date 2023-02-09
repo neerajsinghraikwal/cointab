@@ -14,8 +14,8 @@ import { Image } from "@chakra-ui/image";
 import { Spinner } from "@chakra-ui/spinner";
 import { Select } from "@chakra-ui/select";
 import { Button } from "@chakra-ui/button";
-import found from "./found.png"
-import {Link} from "react-router-dom"
+import found from "./found.png";
+import { Link } from "react-router-dom";
 
 const Users = () => {
   const [country, setCountry] = useState(null);
@@ -27,9 +27,8 @@ const Users = () => {
   const [total, setTotal] = useState(null);
   const [array, setArray] = useState([]);
 
-
   // Fetching data from api
-  async function fetchData() {
+  async function fetchData(page, country, gender, age) {
     let apiUrl = `https://cointab-c0o9.onrender.com/users?page=${page}`;
     if (country) {
       apiUrl += "&country=" + country;
@@ -42,7 +41,7 @@ const Users = () => {
     }
     try {
       let users = await axios.get(apiUrl);
-      if (users.data.total == 0) {
+      if (users.data.total === 0) {
         setArray([]);
         setData(users.data.data);
         setLoading(false);
@@ -59,103 +58,148 @@ const Users = () => {
     } catch (e) {
       setArray([]);
       setLoading(false);
-      console.log(e);
     }
   }
 
   // Reset all filters
   const handleReset = () => {
-    setGender(null);
-    setCountry(null);
-    setAge(null);
+    setGender("");
+    setCountry("");
+    setAge("");
   };
 
-  // Displaying the data 
+  // Displaying the data
   useEffect(() => {
     setLoading(true);
-    fetchData();
+    fetchData(page, country, gender, age);
   }, [page, age, country, gender]);
-  
 
-  if (loading) {
-    return (
-      <>
-        <Center h={"100vh"}>
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-            width="100px"
-            height="100px"
-          />
-        </Center>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Box>
-          <HStack mt={"30px"} justifyContent="center">
-            <Link to="/"><Button>Home</Button></Link>
-            <Select w={"300px"}
-              placeholder="Gender"
-              onChange={(e) => setGender(e.target.value)}
-            >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </Select>
+  return (
+    <>
+      <Box>
+        <HStack mt={"30px"} justifyContent="center">
+          <Link to="/">
+            <Button>Home</Button>
+          </Link>
+          <Select
+            w={"300px"}
+            onChange={(e) => setGender(e.target.value)}
+            value={gender}
+          >
+            <option value="">Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </Select>
 
-            <Select  w={"300px"}
-              placeholder="Country"
-              onChange={(e) => setCountry(e.target.value)}
-            >
-              <option value="India">India</option>
-              <option value="Australia">Australia</option>
-              <option value="United States">United States</option>
-              <option value="Denmark">Denmark</option>
-              <option value="China">China</option>
-              <option value="United Kingdom">United Kingdom</option>
-              <option value="Canada">Canada</option>
-            </Select>
+          <Select
+            w={"300px"}
+            onChange={(e) => setCountry(e.target.value)}
+            value={country}
+          >
+            <option value="">Country</option>
+            <option value="India">India</option>
+            <option value="Australia">Australia</option>
+            <option value="United States">United States</option>
+            <option value="Denmark">Denmark</option>
+            <option value="China">China</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="Canada">Canada</option>
+          </Select>
 
-            <Select placeholder="Age" onChange={(e) => setAge(+e.target.value)}  w={"300px"} >
-              <option value="10">10+</option>
-              <option value="20">20+</option>
-              <option value="30">30+</option>
-              <option value="50">50+</option>
-            </Select>
+          <Select
+            onChange={(e) => setAge(+e.target.value)}
+            w={"300px"}
+            value={age}
+          >
+            <option value="">Age</option>
+            <option value="10">10+</option>
+            <option value="20">20+</option>
+            <option value="30">30+</option>
+            <option value="50">50+</option>
+          </Select>
 
-            <Button onClick={handleReset} p="20px 30px 20px 30px" fontSize="20px"  bgColor="red" color={"white"}>Reset Filter</Button>
-          </HStack>
-          {data.length > 0 ? <TableContainer border="1px" w={"90%"} m="auto" mt={"30px"}>
+          <Button
+            onClick={handleReset}
+            p="20px 30px 20px 30px"
+            fontSize="20px"
+            bgColor="red"
+            color={"white"}
+          >
+            Reset Filter
+          </Button>
+        </HStack>
+        {loading ? (
+          <>
+            <Center h={"100vh"}>
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="xl"
+                width="100px"
+                height="100px"
+              />
+            </Center>
+          </>
+        ) : data.length > 0 ? (
+          <TableContainer border="1px" w={"90%"} m="auto" mt={"30px"}>
             <Table size="sm" border="1px">
-              <Thead >
+              <Thead>
                 <Tr>
-                  <Th border="1px" p="20px 30px 20px 30px" fontSize="20px"><Center>Profile</Center></Th>
-                  <Th border="1px" p="20px 30px 20px 30px" fontSize="20px"><Center>Name</Center></Th>
-                  <Th border="1px" p="20px 30px 20px 30px" fontSize="20px"><Center>Country</Center></Th>
-                  <Th border="1px" p="20px 30px 20px 30px" fontSize="20px"><Center>Gender</Center></Th>
-                  <Th border="1px" p="20px 30px 20px 30px" fontSize="20px"><Center>Age</Center></Th>
+                  <Th border="1px" p="20px 30px 20px 30px" fontSize="20px">
+                    <Center>Profile</Center>
+                  </Th>
+                  <Th border="1px" p="20px 30px 20px 30px" fontSize="20px">
+                    <Center>Name</Center>
+                  </Th>
+                  <Th border="1px" p="20px 30px 20px 30px" fontSize="20px">
+                    <Center>Country</Center>
+                  </Th>
+                  <Th border="1px" p="20px 30px 20px 30px" fontSize="20px">
+                    <Center>Gender</Center>
+                  </Th>
+                  <Th border="1px" p="20px 30px 20px 30px" fontSize="20px">
+                    <Center>Age</Center>
+                  </Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {data?.map((el) => {
                   return (
                     <Tr>
-                      <Td border="1px"><Center><Image src={el.large}></Image></Center></Td>
-                      <Td border="1px"><Center>{el.name.title} {el.name.first} {el.name.last}</Center></Td>
-                      <Td border="1px"><Center>{el.country}</Center></Td>
-                      <Td border="1px" textTransform={"capitalize"}><Center>{el.gender}</Center></Td>
-                      <Td border="1px"><Center>{el.age}</Center></Td>
+                      <Td border="1px">
+                        <Center>
+                          <Image src={el.large}></Image>
+                        </Center>
+                      </Td>
+                      <Td border="1px">
+                        <Center>
+                          {el.name.title} {el.name.first} {el.name.last}
+                        </Center>
+                      </Td>
+                      <Td border="1px">
+                        <Center>{el.country}</Center>
+                      </Td>
+                      <Td border="1px" textTransform={"capitalize"}>
+                        <Center>{el.gender}</Center>
+                      </Td>
+                      <Td border="1px">
+                        <Center>{el.age}</Center>
+                      </Td>
                     </Tr>
                   );
-                }) }
+                })}
               </Tbody>
             </Table>
-          </TableContainer> : <Center><Image src={found} w="300px" h="300px"></Image></Center>}
-          {data.length > 0 ? <HStack justifyContent={"center"} mt="20px">
+          </TableContainer>
+        ) : (
+          <Center>
+            <Image src={found} w="300px" h="300px"></Image>
+          </Center>
+        )}
+        {data.length > 0 ? (
+          <HStack justifyContent={"center"} mt="20px">
             <Button
               onClick={() => setPage((page) => page - 1)}
               isDisabled={page === 1}
@@ -179,11 +223,11 @@ const Users = () => {
             >
               Next
             </Button>
-          </HStack> : null}
-        </Box>
-      </>
-    );
-  }
+          </HStack>
+        ) : null}
+      </Box>
+    </>
+  );
 };
 
 export default Users;
