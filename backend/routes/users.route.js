@@ -11,9 +11,8 @@ const userRouter = Router();
 userRouter.post("/",async(req,res)=>{
     try{
         const data = await axios.get("https://randomuser.me/api/?results=50")
-        console.log("hello world")
         const users = data.data.results
-        const userdata = users.map(({ gender, name, email,location:{country},registered:{age},picture:{large} }) => ({ gender, name, email,country,age,large}));
+        const userdata = users.map(({ gender, name, email,location:{country},dob:{age},picture:{large} }) => ({ gender, name, email,country,age,large}));
         const coindata = await UserModel.insertMany(userdata)
         res.status(200).send(coindata)
     }catch(e){
