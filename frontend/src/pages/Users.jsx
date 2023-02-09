@@ -68,6 +68,20 @@ const Users = () => {
     setAge("");
   };
 
+  const handleCountry = (e) => {
+    setCountry(e.target.value)
+    setPage(1)
+  };
+
+  const handleAge = (e) => {
+    setAge(e.target.value)
+  };
+
+  const handleGender = (e) => {
+    setGender(e.target.value)
+    setPage(1)
+  };
+
   // Displaying the data
   useEffect(() => {
     setLoading(true);
@@ -83,7 +97,7 @@ const Users = () => {
           </Link>
           <Select
             w={"300px"}
-            onChange={(e) => setGender(e.target.value)}
+            onChange={handleGender}
             value={gender}
           >
             <option value="">Gender</option>
@@ -93,7 +107,7 @@ const Users = () => {
 
           <Select
             w={"300px"}
-            onChange={(e) => setCountry(e.target.value)}
+            onChange={handleCountry}
             value={country}
           >
             <option value="">Country</option>
@@ -107,7 +121,7 @@ const Users = () => {
           </Select>
 
           <Select
-            onChange={(e) => setAge(+e.target.value)}
+            onChange={handleAge}
             w={"300px"}
             value={age}
           >
